@@ -103,5 +103,5 @@ ENV/
 # PyCharm
 .idea
 
-# Personal
+# Properties
 properties.py
