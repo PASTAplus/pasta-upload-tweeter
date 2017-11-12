@@ -19,6 +19,7 @@ import daiquiri
 from flask import Flask
 from flask import request
 
+import properties
 import tweet
 
 app = Flask(__name__)
@@ -54,7 +55,11 @@ def get_domain(address=None):
 @app.route('/upload', methods=['POST', 'GET'])
 def upload():
 
-    pasta_addresses = ['129.24.124.170', '129.24.124.73', '129.24.124.97']
+    package = properties.PACKAGE
+    package_s = properties.PACKAGE_S
+    package_d = properties.PACKAGE_D
+
+    pasta_addresses = [package, package_d, package_s]
 
     if request.method == 'POST':
         package_id = request.get_data().decode('utf-8')
