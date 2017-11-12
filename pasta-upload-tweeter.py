@@ -30,7 +30,7 @@ logger = daiquiri.getLogger('pasta-upload-tweeter.py: ' + __name__)
 
 def build_pasta_url(address=None, package_id=None):
     scope, identifier, revision = package_id.split('.')
-    client = get_domain(address=address)
+    client = get_portal_name(address=address)
     pasta_url = 'https://' + client + '/nis/mapbrowse?scope=' + scope + \
                 '&identifier=' + identifier + '&revision=' + revision
     return pasta_url
@@ -42,12 +42,12 @@ def build_tweet_msg(package_id=None, pasta_url=None):
     return msg
 
 
-def get_domain(address=None):
-    if address == '129.24.124.170':
+def get_portal_name(address=None):
+    if address == properties.PACKAGE_D:
         return 'portal-d.lternet.edu'
-    elif address == '129.24.124.73':
+    elif address == properties.PACKAGE_S:
         return 'portal-s.lternet.edu'
-    elif address == '129.24.124.97':
+    elif address == properties.PACKAGE:
         return 'portal.lternet.edu'
     return None
 
