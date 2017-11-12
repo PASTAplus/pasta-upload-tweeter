@@ -39,7 +39,7 @@ def tweet_upload(msg=None):
                           consumer_secret=consumer_secret,
                           access_token_key=access_key,
                           access_token_secret=access_secret)
-        status = api.PostDirectMessage(text=msg, screen_name='LTERNIS')
+        status = api.PostDirectMessage(text=msg, screen_name='GauchoSays')
     except Exception as e:
         logger.error(e)
 
