@@ -75,7 +75,7 @@ def get_pasta_name(address=None):
     return None
 
 
-@app.route('/upload', methods=['POST', 'GET'])
+@app.route('/upload', methods=['POST'])
 def upload():
 
     package = properties.PACKAGE
