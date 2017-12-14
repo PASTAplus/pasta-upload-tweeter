@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""":Mod: pasta-upload-tweeter.py
+""":Mod: pasta_upload_tweeter.py
 
 :Synopsis:
  
@@ -26,7 +26,7 @@ import tweet
 app = Flask(__name__)
 
 daiquiri.setup(level=logging.INFO)
-logger = daiquiri.getLogger('pasta-upload-tweeter.py: ' + __name__)
+logger = daiquiri.getLogger('pasta_upload_tweeter.py: ' + __name__)
 
 
 def build_pasta_url(address=None, package_id=None):
