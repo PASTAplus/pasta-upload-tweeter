@@ -13,14 +13,8 @@
     11/12/17
 """
 
-import logging
-
-import daiquiri
 import requests
 from lxml import etree
-
-daiquiri.setup(level=logging.INFO)
-logger = daiquiri.getLogger('eml.py: ' + __name__)
 
 
 class Eml(object):
@@ -36,14 +30,11 @@ class Eml(object):
     def _get_eml(self):
         url = 'https://' + self.pasta_host + '/package/metadata/eml/' + \
               self.scope + '/' + self.identifier + '/' + self.revision
-        eml = None
-        try:
-            r = requests.get(url=url)
-            if r.status_code == requests.codes.ok:
-                eml = r.text
-        except Exception as e:
-            logger.error(e)
-        return eml
+        r = requests.get(url=url)
+        if r.status_code == requests.codes.ok:
+            return r.text
+        else:
+            raise Exception('Unable to read EML for {pid}'.format(pid=self.package_id))
 
     def _get_title(self):
         titles = self.root.xpath('//dataset/title')
