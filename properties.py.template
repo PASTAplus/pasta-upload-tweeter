@@ -12,6 +12,8 @@
     11/9/17
 """
 
+DEBUG=False
+
 # Twitter application identification and credentials
 CONSUMER_KEY = 'SECRET'
 CONSUMER_SECRET = 'SECRET'
