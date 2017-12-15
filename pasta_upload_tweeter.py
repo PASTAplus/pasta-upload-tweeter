@@ -12,10 +12,8 @@
     11/11/17
 """
 
-import logging
 import http
 
-import daiquiri
 from flask import Flask
 from flask import request
 
@@ -24,10 +22,6 @@ import properties
 import tweet
 
 app = Flask(__name__)
-
-daiquiri.setup(level=logging.INFO)
-logger = daiquiri.getLogger('pasta_upload_tweeter.py: ' + __name__)
-
 
 def build_pasta_url(address=None, package_id=None):
     scope, identifier, revision = package_id.split('.')
@@ -75,29 +69,37 @@ def get_pasta_name(address=None):
     return None
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/tweet', methods=['POST'])
 def upload():
 
-    package = properties.PACKAGE
-    package_s = properties.PACKAGE_S
-    package_d = properties.PACKAGE_D
+    pasta_addresses = [properties.PACKAGE,
+                        properties.PACKAGE_S,
+                        properties.PACKAGE_D]
 
-    pasta_addresses = [package, package_d, package_s]
+    remote_address = request.environ['REMOTE_ADDR']
+    if remote_address not in pasta_addresses:
+        if properties.DEBUG:
+            remote_address = properties.PACKAGE_D
+        else:
+            msg = 'Request not from a PASTA server!\n'
+            return msg, http.HTTPStatus.BAD_REQUEST
 
-    if request.method == 'POST':
-        package_id = request.get_data().decode('utf-8')
-        remote_address = request.environ['REMOTE_ADDR']
-        if remote_address in pasta_addresses and len(package_id.split('.')) == 3:
-            pasta_host = get_pasta_name(address=remote_address)
+    package_id = request.get_data().decode('utf-8')
+    if len(package_id.split('.')) == 3:
+        pasta_host = get_pasta_name(address=remote_address)
+        try:
             eml = Eml(package_id=package_id, pasta_host=pasta_host)
             eml_title = eml.title
             url = build_pasta_url(address=remote_address, package_id=package_id)
             msg = build_tweet_msg(package_id=package_id, pasta_url=url, full_title=eml_title)
-            status = tweet.tweet_upload(msg=msg)
-            logger.info(status)
+            tweet.tweet_upload(msg=msg)
             return '\n', http.HTTPStatus.OK
-        else:
-            return 'Bad request\n', http.HTTPStatus.BAD_REQUEST
+        except Exception as e:
+            msg = str(e) + '\n'
+            return msg, http.HTTPStatus.INTERNAL_SERVER_ERROR
+    else:
+        msg = 'Request package identifier is not parsable into scope.identifier.revision!\n'
+        return msg, http.HTTPStatus.BAD_REQUEST
 
 
 if __name__ == '__main__':
