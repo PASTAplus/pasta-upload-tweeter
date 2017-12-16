@@ -27,7 +27,8 @@ def tweet_upload(msg=None):
                       consumer_secret=consumer_secret,
                       access_token_key=access_key,
                       access_token_secret=access_secret)
-    api.PostUpdates(status=msg, continuation='\u2026')
+    status =  api.PostUpdate(status=msg, verify_status_length=False)
+    return status
 
 
 def main():
