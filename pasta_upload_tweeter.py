@@ -41,7 +41,7 @@ def build_pasta_url(address=None, package_id=None):
 
 
 def build_tweet_msg(package_id=None, pasta_url=None, full_title=None):
-    title = full_title.replace('\n', '')
+    title = ' '.join(full_title.split()) # Collapse to single line and spaces
     msg = 'New EDI data package {pid} ({url}): "{title}"'.format(pid=package_id,
                                                                url=pasta_url,
                                                                title=title)
