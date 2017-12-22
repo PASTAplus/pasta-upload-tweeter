@@ -54,11 +54,11 @@ def build_tweet_msg(package_id=None, pasta_url=None, full_title=None):
 
 def get_portal_name(address=None):
     if address == properties.PACKAGE_D:
-        return 'portal-d.lternet.edu'
+        return 'portal-d.edirepository.org'
     elif address == properties.PACKAGE_S:
-        return 'portal-s.lternet.edu'
+        return 'portal-s.edirepository.org'
     elif address == properties.PACKAGE:
-        return 'portal.lternet.edu'
+        return 'portal.edirepository.org'
     return None
 
 
