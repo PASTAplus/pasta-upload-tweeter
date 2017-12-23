@@ -1,11 +1,11 @@
 # PASTA Upload Tweeter
 Tweets when a new data package is uploaded to the PASTA data repository!
 
+![EDIgotdata new data package tweet](https://github.com/EDIorg/pasta-upload-tweeter/blob/master/EDI-tweet.png)
+
 ## About
 
 The PASTA Upload Tweeter is a Python 3 application that listens for PASTA data package upload notifications and responds with a "tweet" through the [@EDIgotdata](https://twitter.com/EDIgotdata) twitter account. Tweets include the PASTA package identifier, a link to the EDI Data Portal landing page for the data package, and the title of the data package (truncated if necessary).
-
-![EDIgotdata new data package tweet](https://github.com/EDIorg/pasta-upload-tweeter/blob/master/EDI-tweet.png)
 
 ## Technical
 
