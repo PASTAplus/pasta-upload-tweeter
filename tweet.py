@@ -27,7 +27,10 @@ def tweet_upload(msg=None):
                       consumer_secret=consumer_secret,
                       access_token_key=access_key,
                       access_token_secret=access_secret)
-    status =  api.PostUpdate(status=msg, verify_status_length=False)
+
+    status = None
+    if not properties.DEBUG:
+        status =  api.PostUpdate(status=msg, verify_status_length=False)
     return status
 
 
