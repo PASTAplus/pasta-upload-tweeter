@@ -4,6 +4,7 @@
 """:Mod: pasta_upload_tweeter.py
 
 :Synopsis:
+    Listen for PASTA data package upload notification and tweet when occurs.
  
 :Author:
     servilla
@@ -19,6 +20,7 @@ import os
 import daiquiri
 from flask import Flask
 from flask import request
+import requests
 
 from eml import Eml
 import mail_me as mm
@@ -30,19 +32,18 @@ logfile = cwd + '/pasta_upload_tweeter.log'
 daiquiri.setup(level=logging.INFO, outputs=(daiquiri.output.File(logfile),))
 logger = daiquiri.getLogger(__name__)
 
+
 app = Flask(__name__)
 
 
-def build_pasta_url(address=None, package_id=None):
+def build_pasta_url(package_id=None):
     scope, identifier, revision = package_id.split('.')
-    client = get_portal_name(address=address)
-    pasta_url = 'https://' + client + '/nis/mapbrowse?scope=' + scope + \
-                '&identifier=' + identifier + '&revision=' + revision
+    pasta_url = 'https://' + properties.PORTAL + '/nis/mapbrowse?scope=' + \
+                scope + '&identifier=' + identifier + '&revision=' + revision
     return pasta_url
 
 
-def build_tweet_msg(package_id=None, pasta_url=None, full_title=None):
-    title = ' '.join(full_title.split()) # Collapse to single line and spaces
+def build_tweet_msg(package_id=None, pasta_url=None, title=None):
     msg = 'New EDI data package {pid} ({url}): "{title}"'.format(pid=package_id,
                                                                url=pasta_url,
                                                                title=title)
@@ -53,64 +54,38 @@ def build_tweet_msg(package_id=None, pasta_url=None, full_title=None):
     return msg
 
 
-def get_portal_name(address=None):
-    if address == properties.PACKAGE_D:
-        return 'portal-d.edirepository.org'
-    elif address == properties.PACKAGE_S:
-        return 'portal-s.edirepository.org'
-    elif address == properties.PACKAGE:
-        return 'portal.edirepository.org'
-    return None
-
-
-def get_package_name(address=None):
-    if address == properties.PACKAGE_D:
-        return 'package-d.lternet.edu'
-    elif address == properties.PACKAGE_S:
-        return 'package-s.lternet.edu'
-    elif address == properties.PACKAGE:
-        return 'package.lternet.edu'
-    return None
-
-
-def get_pasta_name(address=None):
-    if address == properties.PACKAGE_D:
-        return 'pasta-d.lternet.edu'
-    elif address == properties.PACKAGE_S:
-        return 'pasta-s.lternet.edu'
-    elif address == properties.PACKAGE:
-        return 'pasta.lternet.edu'
-    return None
+def get_eml(package_id=None):
+    scope, identifier, revision = package_id.split('.')
+    url = 'https://' + properties.PASTA + '/package/metadata/eml/' + \
+          scope + '/' + identifier + '/' + revision
+    r = requests.get(url=url)
+    if r.status_code == requests.codes.ok:
+        return r.text.encode()
+    else:
+        raise Exception('Unable to read EML for {pid}'.format(pid=self.package_id))
 
 
 @app.route('/tweet', methods=['POST'])
 def upload():
 
-    pasta_addresses = [properties.PACKAGE,
-                        properties.PACKAGE_S,
-                        properties.PACKAGE_D]
-
     remote_address = request.environ['REMOTE_ADDR']
-    if remote_address not in pasta_addresses:
-        if properties.DEBUG:
-            remote_address = properties.PACKAGE_D
-        else:
-            msg = 'Request not from a PASTA server!\n'
-            logger.error('Unknown address: {addr}'.format(addr=remote_address))
-            return msg, http.HTTPStatus.BAD_REQUEST
+    if remote_address not in properties.WHITE_LIST:
+        msg = 'Request not from a trusted server!\n'
+        logger.error('Unknown address: {addr}'.format(addr=remote_address))
+        return msg, http.HTTPStatus.BAD_REQUEST
 
     package_id = request.get_data().decode('utf-8')
     logger.info(
         'Remote address and pid: {addr}, {pid}'.format(addr=remote_address,
                                                        pid=package_id))
+
+    # Package identifier pattern: "scope.identifier.revision"
     if len(package_id.split('.')) == 3:
-        pasta_host = get_pasta_name(address=remote_address)
         try:
-            eml = Eml(package_id=package_id, pasta_host=pasta_host)
-            eml_title = eml.title
-            url = build_pasta_url(address=remote_address, package_id=package_id)
+            eml = Eml(get_eml(package_id=package_id))
+            url = build_pasta_url(package_id=package_id)
             msg = build_tweet_msg(package_id=package_id, pasta_url=url,
-                                  full_title=eml_title)
+                                  title=eml.title)
             logger.info('Tweet message: {msg}'.format(msg=msg))
             status = tweet.tweet_upload(msg=msg)
             logger.info('{status}'.format(status=status))
@@ -124,7 +99,7 @@ def upload():
             logger.info(mail)
             return msg, http.HTTPStatus.INTERNAL_SERVER_ERROR
     else:
-        msg = 'Request package identifier not parsable!\n'
+        msg = 'Request package identifier not recognized\n'
         logger.error('Unknown request body: {pid}'.format(pid=package_id))
         return msg, http.HTTPStatus.BAD_REQUEST
 
