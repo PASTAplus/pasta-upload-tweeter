@@ -21,6 +21,7 @@ from flask import Flask
 from flask import request
 
 from eml import Eml
+import mail_me as mm
 import properties
 import tweet
 
@@ -113,10 +114,14 @@ def upload():
             logger.info('Tweet message: {msg}'.format(msg=msg))
             status = tweet.tweet_upload(msg=msg)
             logger.info('{status}'.format(status=status))
+            mail = mm.mail_me(status='INFO', msg=status, to=properties.MAIL_TO)
+            logger.info(mail)
             return '\n', http.HTTPStatus.OK
         except Exception as e:
             msg = str(e) + '\n'
             logger.error('Unknown error: {e}'.format(e=msg))
+            mail = mm.mail_me(status='ERROR', msg=msg, to=properties.MAIL_TO)
+            logger.info(mail)
             return msg, http.HTTPStatus.INTERNAL_SERVER_ERROR
     else:
         msg = 'Request package identifier not parsable!\n'
