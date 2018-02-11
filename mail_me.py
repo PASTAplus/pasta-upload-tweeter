@@ -16,8 +16,11 @@
 import logging
 import smtplib
 
+import daiquiri
+
 import properties
 
+logger = daiquiri.getLogger(__name__)
 
 def mail_me(status='INFO', msg=None, to=None):
     subject = 'Subject: pasta-upload-tweeter ' + status + '...\n'
@@ -28,9 +31,13 @@ def mail_me(status='INFO', msg=None, to=None):
         smtpObj.login(properties.GMAIL_NAME, properties.GMAIL_PASSWORD)
         smtpObj.sendmail(properties.GMAIL_NAME, to, subject + msg)
         smtpObj.quit()
-        return 'Sending email to ' + to + ' succeeded'
+        response = 'Sending email to ' + to + ' succeeded'
+        logger.info(response)
+        return response
     except Exception as e:
-        return 'Sending email failed - ' + str(e)
+        response = 'Sending email failed - ' + str(e)
+        logger.error(response)
+        return response
 
 
 def main():
