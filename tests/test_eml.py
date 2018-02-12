@@ -13,11 +13,12 @@
 """
 
 import unittest
-import logging
 
+import daiquiri
 from eml import Eml
 
-logger = logging.getLogger('test_eml')
+
+logger = daiquiri.getLogger(__name__)
 
 
 class TestEml(unittest.TestCase):
