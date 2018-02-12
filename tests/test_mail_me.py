@@ -22,15 +22,10 @@ import mail_me as mm
 import properties
 
 
-class TestMailMe(unittest.TestCase):
+logger = daiquiri.getLogger(__name__)
 
-    @classmethod
-    def setUpClass(cls):
-        cwd = os.path.dirname(os.path.realpath(__file__))
-        logfile = cwd + '/pasta_upload_tweeter.log'
-        daiquiri.setup(level=logging.INFO,
-                       outputs=(daiquiri.output.File(logfile),))
-        logger = daiquiri.getLogger(__name__)
+
+class TestMailMe(unittest.TestCase):
 
     def setUp(self):
         pass
