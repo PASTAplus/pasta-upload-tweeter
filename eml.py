@@ -13,6 +13,9 @@
     11/12/17
 """
 
+import daiquiri
+logger = daiquiri.getLogger(__name__)
+
 from lxml import etree
 
 
@@ -32,4 +35,5 @@ class Eml(object):
     def title(self):
         # Collapse to single line and spaces
         title = ' '.join(self._title.split())
+        logger.info(title)
         return title
