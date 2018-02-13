@@ -24,13 +24,12 @@ logger = daiquiri.getLogger(__name__)
 
 def mail_me(status='INFO', msg=None, to=None):
     subject = 'Subject: pasta-upload-tweeter ' + status + '...\n'
+    smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
     try:
-        smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
         smtpObj.ehlo()
         smtpObj.starttls()
         smtpObj.login(properties.GMAIL_NAME, properties.GMAIL_PASSWORD)
-        smtpObj.sendmail(properties.GMAIL_NAME, to, subject + msg + '\n')
-        smtpObj.quit()
+        smtpObj.sendmail(properties.GMAIL_NAME, to, subject + msg)
         response = 'Sending email to ' + to + ' succeeded'
         logger.info(response)
         return response
@@ -38,6 +37,8 @@ def mail_me(status='INFO', msg=None, to=None):
         response = 'Sending email failed - ' + str(e)
         logger.error(response)
         return response
+    finally:
+        smtpObj.quit()
 
 
 def main():
