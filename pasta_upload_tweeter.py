@@ -89,7 +89,7 @@ def upload():
             logger.info('Tweet message: {msg}'.format(msg=msg))
             status = tweet.tweet_upload(msg=msg)
             logger.info('{status}'.format(status=status))
-            mm.mail_me(status='INFO', msg=status, to=properties.MAIL_TO)
+            mm.mail_me(status='INFO', msg=str(status), to=properties.MAIL_TO)
             return '\n', http.HTTPStatus.OK
         except Exception as e:
             msg = str(e) + '\n'
