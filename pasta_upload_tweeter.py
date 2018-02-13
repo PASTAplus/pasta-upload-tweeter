@@ -62,7 +62,7 @@ def get_eml(package_id=None):
     if r.status_code == requests.codes.ok:
         return r.text.encode()
     else:
-        raise Exception('Unable to read EML for {pid}'.format(pid=self.package_id))
+        raise Exception('Unable to read EML for {pid}'.format(pid=package_id))
 
 
 @app.route('/tweet', methods=['POST'])
@@ -89,12 +89,13 @@ def upload():
             logger.info('Tweet message: {msg}'.format(msg=msg))
             status = tweet.tweet_upload(msg=msg)
             logger.info('{status}'.format(status=status))
-            mm.mail_me(status='INFO', msg=str(status), to=properties.MAIL_TO)
+            mm.mail_me(status='INFO', msg=str(status).encode(),
+                       to=properties.MAIL_TO)
             return '\n', http.HTTPStatus.OK
         except Exception as e:
             msg = str(e) + '\n'
             logger.error('Unknown error: {e}'.format(e=msg))
-            mm.mail_me(status='ERROR', msg=msg, to=properties.MAIL_TO)
+            mm.mail_me(status='ERROR', msg=msg.encode(), to=properties.MAIL_TO)
             return msg, http.HTTPStatus.INTERNAL_SERVER_ERROR
     else:
         msg = 'Request package identifier not recognized\n'
