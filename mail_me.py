@@ -29,7 +29,7 @@ def mail_me(status='INFO', msg=None, to=None):
         smtpObj.ehlo()
         smtpObj.starttls()
         smtpObj.login(properties.GMAIL_NAME, properties.GMAIL_PASSWORD)
-        smtpObj.sendmail(properties.GMAIL_NAME, to, subject + msg)
+        smtpObj.sendmail(properties.GMAIL_NAME, to, subject + msg + '\n')
         smtpObj.quit()
         response = 'Sending email to ' + to + ' succeeded'
         logger.info(response)
