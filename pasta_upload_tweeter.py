@@ -89,13 +89,13 @@ def upload():
             logger.info('Tweet message: {msg}'.format(msg=msg))
             status = tweet.tweet_upload(msg=msg)
             logger.info('{status}'.format(status=status))
-            subject = 'INFO: ' + __name__ + ' ' + package_id
+            subject = '(INFO) ' + __name__ + ' ' + package_id
             mm.mail_me(subject=subject, msg=str(status), to=properties.MAIL_TO)
             return '\n', http.HTTPStatus.OK
         except Exception as e:
             msg = str(e) + '\n'
             logger.error('Unknown error: {e}'.format(e=msg))
-            subject = 'ERROR: ' + __name__ + ' ' + package_id
+            subject = '(ERROR) ' + __name__ + ' ' + package_id
             mm.mail_me(subject=subject, msg=msg, to=properties.MAIL_TO)
             return msg, http.HTTPStatus.INTERNAL_SERVER_ERROR
     else:
