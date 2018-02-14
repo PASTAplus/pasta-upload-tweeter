@@ -22,22 +22,21 @@ import properties
 
 logger = daiquiri.getLogger(__name__)
 
-def mail_me(subject=None, msg=None, to=None):
+
+def mail_me(subject: str = None, msg: str = None, to: str = None) -> str:
 
     # Convert subject and msg to byte array
-    subject = ('Subject: ' + subject + '\n\n').encode()
-    try:
-        msg = msg.encode()
-    except AttributeError:
-        pass
+    body = ('Subject: ' + subject + '\n').encode() + \
+           ('To: ' + to + '\n').encode() + \
+           ('From: ' + properties.GMAIL_NAME + '\n\n').encode() + \
+           (msg + '\n').encode()
 
-    mail_msg = subject + msg
     smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
     try:
         smtpObj.ehlo()
         smtpObj.starttls()
         smtpObj.login(properties.GMAIL_NAME, properties.GMAIL_PASSWORD)
-        smtpObj.sendmail(properties.GMAIL_NAME, to, mail_msg)
+        smtpObj.sendmail(from_addr=properties.GMAIL_NAME, to_addrs=to, msg=body)
         response = 'Sending email to ' + to + ' succeeded'
         logger.info(response)
         return response
