@@ -25,7 +25,7 @@ logger = daiquiri.getLogger(__name__)
 def mail_me(subject=None, msg=None, to=None):
 
     # Convert subject and msg to byte array
-    subject = ('Subject: ' + subject + '\n').encode()
+    subject = ('Subject: ' + subject + '\n\n').encode()
     try:
         msg = msg.encode()
     except AttributeError:
