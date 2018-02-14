@@ -34,7 +34,8 @@ class TestMailMe(unittest.TestCase):
         pass
 
     def test_mail_me(self):
-        status = mm.mail_me(status='INFO', msg='Test', to=properties.MAIL_TO)
+        status = mm.mail_me(subject='INFO: '+__name__, msg='Test',
+                            to=properties.MAIL_TO)
         self.assertIn('succeeded', status)
 
 
