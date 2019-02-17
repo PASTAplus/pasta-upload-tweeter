@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance to serve pasta_upload_tweeter
+After=network.target
+
+[Service]
+User=pasta
+Group=www-data
+WorkingDirectory=/home/pasta/pasta-upload-tweeter
+Environment="PATH=/home/pasta/anaconda3/envs/tweeter/bin"
+ExecStart=/home/pasta/anaconda3/envs/tweeter/bin/uwsgi --ini pasta_upload_tweeter.ini
+
+[Install]
+WantedBy=multi-user.target
