@@ -26,7 +26,7 @@ GMAIL_PASSWORD = 'SECRET'
 MAIL_TO = 'SECRET'
 
 # PASTA Data Package Manager Server Addresses
-WHITE_LIST = ('129.24.124.76', '129.24.124.169', '129.24.124.31', )
+WHITE_LIST = ('129.24.124.149', '129.24.124.169', '129.24.124.76', )
 
 PASTA = "pasta.lternet.edu"
 PORTAL = "portal.edirepository.org"
