@@ -23,11 +23,11 @@ import properties
 logger = daiquiri.getLogger(__name__)
 
 
-def mail_me(subject: str = None, msg: str = None, to: str = None) -> str:
+def mail_me(subject: str = None, msg: str = None, to: tuple = None) -> str:
 
     # Convert subject and msg to byte array
     body = ('Subject: ' + subject + '\n').encode() + \
-           ('To: ' + to + '\n').encode() + \
+           ("To: " + ", ".join(to) + "\n").encode() + \
            ('From: ' + properties.GMAIL_NAME + '\n\n').encode() + \
            (msg + '\n').encode()
 
@@ -37,7 +37,7 @@ def mail_me(subject: str = None, msg: str = None, to: str = None) -> str:
         smtpObj.starttls()
         smtpObj.login(properties.GMAIL_NAME, properties.GMAIL_PASSWORD)
         smtpObj.sendmail(from_addr=properties.GMAIL_NAME, to_addrs=to, msg=body)
-        response = 'Sending email to ' + to + ' succeeded'
+        response = 'Sending email to ' + ", ".join(to) + ' succeeded'
         logger.info(response)
         return response
     except Exception as e:

@@ -23,7 +23,7 @@ ACCESS_SECRET = 'SECRET'
 # GMAIL account information
 GMAIL_NAME = 'SECRET'
 GMAIL_PASSWORD = 'SECRET'
-MAIL_TO = 'SECRET'
+MAIL_TO = ('SECRET',)
 
 # PASTA Data Package Manager Server Addresses
 WHITE_LIST = ('129.24.124.149', '129.24.124.169', '129.24.124.76', )
