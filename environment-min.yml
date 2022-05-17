@@ -1,0 +1,12 @@
+name: tweeter
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - requests
+  - daiquiri
+  - flask
+  - pytest
+  - lxml
+prefix: /home/servilla/anaconda3/envs/tweeter
