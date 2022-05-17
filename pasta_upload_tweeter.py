@@ -23,7 +23,7 @@ from flask import request
 import requests
 
 from eml import Eml
-import mail_me as mm
+import mimemail
 import properties
 import tweet
 
@@ -44,9 +44,7 @@ def build_pasta_url(package_id=None):
 
 
 def build_tweet_msg(package_id=None, pasta_url=None, title=None):
-    msg = 'New EDI data package {pid} ({url}): "{title}"'.format(pid=package_id,
-                                                               url=pasta_url,
-                                                               title=title)
+    msg = 'New EDI data package {pid} ({url}): "{title}"'.format(pid=package_id, url=pasta_url, title=title)
     if len(msg) > 280:
         trunc_msg = msg[0:279]
         msg = trunc_msg + '\u2026'
@@ -90,13 +88,13 @@ def upload():
             status = tweet.tweet_upload(msg=msg)
             logger.info('{status}'.format(status=status))
             subject = '(INFO) ' + __name__ + ' ' + package_id
-            mm.mail_me(subject=subject, msg=str(status), to=properties.MAIL_TO)
+            mimemail.send_mail(subject=subject, msg=str(status))
             return '\n', http.HTTPStatus.OK
         except Exception as e:
             msg = str(e) + '\n'
             logger.error('Unknown error: {e}'.format(e=msg))
             subject = '(ERROR) ' + __name__ + ' ' + package_id
-            mm.mail_me(subject=subject, msg=msg, to=properties.MAIL_TO)
+            mimemail.send_mail(subject=subject, msg=str(status))
             return msg, http.HTTPStatus.INTERNAL_SERVER_ERROR
     else:
         msg = 'Request package identifier not recognized\n'

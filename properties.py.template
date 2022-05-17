@@ -20,10 +20,15 @@ CONSUMER_SECRET = 'SECRET'
 ACCESS_KEY = 'SECRET'
 ACCESS_SECRET = 'SECRET'
 
-# GMAIL account information
-GMAIL_NAME = 'SECRET'
-GMAIL_PASSWORD = 'SECRET'
-MAIL_TO = ('SECRET',)
+# Email configuration
+RELAY_HOST = 'RELAY_HOST'
+RELAY_PASSWORD = 'RELAY_PASSWORD'
+RELAY_USER = 'RELAY_USER'
+RELAY_TLS_PORT = 587
+TO = 'admin@edirepository.org'
+TO_NAME = 'EDI Admin'
+FROM = 'admin@edirepository.org'
+FROM_NAME = 'EDI Admin'
 
 # PASTA Data Package Manager Server Addresses
 WHITE_LIST = ('129.24.124.149', '129.24.124.169', '129.24.124.76', )
