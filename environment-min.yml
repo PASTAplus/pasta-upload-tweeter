@@ -3,10 +3,14 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.10
-  - requests
   - daiquiri
-  - flask
-  - pytest
   - lxml
+  - python=3.10
+  - uwsgi
+  - pytest
+  - requests
+  - flask
+  - pip
+  - pip:
+      - twitter
 prefix: /home/servilla/anaconda3/envs/tweeter
