@@ -12,8 +12,17 @@
 :Created:
     5/9/22
 """
+import logging
+import os
+
+import daiquiri
 
 import mimemail
+
+cwd = os.path.dirname(os.path.realpath(__file__))
+logfile = cwd + '/pasta_upload_tweeter.log'
+daiquiri.setup(level=logging.INFO, outputs=(daiquiri.output.File(logfile),))
+logger = daiquiri.getLogger(__name__)
 
 
 def test_mimemail():
