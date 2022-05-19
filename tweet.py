@@ -30,7 +30,7 @@ def tweet_upload(msg=None):
 
     status = None
     if not properties.DEBUG:
-        status =  api.PostUpdate(status=msg, verify_status_length=False)
+        status = api.PostUpdate(status=msg, verify_status_length=False)
     return status
 
 
