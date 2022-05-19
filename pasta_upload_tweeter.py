@@ -88,13 +88,13 @@ def upload():
             status = tweet.tweet_upload(msg=msg)
             logger.info('{status}'.format(status=status))
             subject = '(INFO) ' + __name__ + ' ' + package_id
-            mimemail.send_mail(subject=subject, msg=str(status))
+            mimemail.send_mail(subject=subject, msg=str(status)+u"\U0001F680")
             return '\n', http.HTTPStatus.OK
         except Exception as e:
             msg = str(e) + '\n'
             logger.error('Unknown error: {e}'.format(e=msg))
             subject = '(ERROR) ' + __name__ + ' ' + package_id
-            mimemail.send_mail(subject=subject, msg=str(status))
+            mimemail.send_mail(subject=subject, msg=msg)
             return msg, http.HTTPStatus.INTERNAL_SERVER_ERROR
     else:
         msg = 'Request package identifier not recognized\n'
