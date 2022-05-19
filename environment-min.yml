@@ -12,5 +12,5 @@ dependencies:
   - flask
   - pip
   - pip:
-      - twitter
+      - python-twitter
 prefix: /home/servilla/anaconda3/envs/tweeter
