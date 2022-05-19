@@ -88,7 +88,7 @@ def upload():
             status = tweet.tweet_upload(msg=msg)
             logger.info('{status}'.format(status=status))
             subject = '(INFO) ' + __name__ + ' ' + package_id
-            mimemail.send_mail(subject=subject, msg=str(status)+u"\U0001F680")
+            mimemail.send_mail(subject=subject, msg=str(status)+u" \U0001F680")
             return '\n', http.HTTPStatus.OK
         except Exception as e:
             msg = str(e) + '\n'
