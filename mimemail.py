@@ -28,6 +28,8 @@ logger = daiquiri.getLogger(__name__)
 
 def send_mail(subject: str, msg: str) -> bool:
 
+    logger.info(f"{str}\n{msg}")
+
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
     message["From"] = formataddr((properties.FROM_NAME, properties.FROM))
