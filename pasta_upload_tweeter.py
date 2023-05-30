@@ -82,13 +82,10 @@ def upload():
         try:
             eml = Eml(get_eml(package_id=package_id))
             url = build_pasta_url(package_id=package_id)
-            msg = build_tweet_msg(package_id=package_id, pasta_url=url,
-                                  title=eml.title)
-            logger.info('Tweet message: {msg}'.format(msg=msg))
-            status = tweet.tweet_upload(msg=msg)
-            logger.info('{status}'.format(status=status))
+            msg = build_tweet_msg(package_id=package_id, pasta_url=url, title=eml.title)
+            msg += f"\nTwitter and Elon Musk suck!"
             subject = '(INFO) ' + __name__ + ' ' + package_id
-            mimemail.send_mail(subject=subject, msg=str(status)+u" \U0001F680")
+            mimemail.send_mail(subject=subject, msg=msg)
             return '\n', http.HTTPStatus.OK
         except Exception as e:
             msg = str(e) + '\n'
