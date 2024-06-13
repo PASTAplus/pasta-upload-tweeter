@@ -34,6 +34,7 @@ def send_mail(subject: str, msg: str) -> bool:
     message["Subject"] = subject
     message["From"] = formataddr((properties.FROM_NAME, properties.FROM))
     message["To"] = formataddr((properties.TO_NAME, properties.TO))
+    message["X-SES-CONFIGURATION-SET"] = "edi-managed"
 
     part = MIMEText(msg, "plain")
     message.attach(part)
