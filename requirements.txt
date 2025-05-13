@@ -8,7 +8,7 @@ colorama==0.4.6
 cryptography==44.0.2
 daiquiri==3.0.0
 exceptiongroup==1.2.2
-Flask==3.1.0
+Flask==3.1.1
 future==1.0.0
 h2==4.2.0
 hpack==4.1.0
