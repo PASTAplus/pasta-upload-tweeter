@@ -87,10 +87,10 @@ def upload():
             mimemail.send_mail(subject=subject, msg=msg)
             return '\n', http.HTTPStatus.OK
         except Exception as e:
-            msg = str(e) + '\n'
-            logger.error('Unknown error: {e}'.format(e=msg))
+            logger.error(f'Unknown error: {e}')
             subject = '(ERROR) ' + __name__ + ' ' + package_id
-            mimemail.send_mail(subject=subject, msg=msg)
+            mimemail.send_mail(subject=subject, msg=str(e))
+            msg = f"Unknown error occurred while processing {package_id}"
             return msg, http.HTTPStatus.INTERNAL_SERVER_ERROR
     else:
         msg = 'Request package identifier not recognized\n'
