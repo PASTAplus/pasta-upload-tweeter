@@ -25,7 +25,6 @@ import requests
 from eml import Eml
 import mimemail
 import properties
-import tweet
 
 cwd = os.path.dirname(os.path.realpath(__file__))
 logfile = cwd + '/pasta_upload_tweeter.log'
@@ -87,10 +86,10 @@ def upload():
             mimemail.send_mail(subject=subject, msg=msg)
             return '\n', http.HTTPStatus.OK
         except Exception as e:
-            logger.error(f'Unknown error: {e}')
+            msg = str(e) + '\n'
+            logger.error('Unknown error: {e}'.format(e=msg))
             subject = '(ERROR) ' + __name__ + ' ' + package_id
-            mimemail.send_mail(subject=subject, msg=str(e))
-            msg = f"Unknown error occurred while processing {package_id}"
+            mimemail.send_mail(subject=subject, msg=msg)
             return msg, http.HTTPStatus.INTERNAL_SERVER_ERROR
     else:
         msg = 'Request package identifier not recognized\n'
