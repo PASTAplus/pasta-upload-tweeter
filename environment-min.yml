@@ -5,13 +5,11 @@ channels:
 dependencies:
   - daiquiri
   - lxml
-  - python=3.11
+  - python=3.13
   - uwsgi
   - pytest
   - requests
   - flask
-  - future
   - oauthlib
   - requests-oauthlib
-  - python-twitter
 prefix: /home/servilla/anaconda3/envs/tweeter
